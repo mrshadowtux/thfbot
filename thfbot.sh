@@ -4,28 +4,17 @@
 # https://github.com/mrshadowtux/thfbot
 
 
-# Configure me here :)
-	# Bot ID - Use the telegram bot "Botfahther" to get a bot ID
-	bot_id="xxxx"
-	
-	# Chat ID of your channel - Use https://api.telegram.org/YOUR_BOT_ID/getUpdates to find this out. Always starts with a -
-	chat_id=-0000000000000 # channel
-	
-	# The interval in seconds at which the forum gets parsed for updates
-	interval=30
-	
-	# Your MySQL credentials
-	mysql_user="xxxx"
-	mysql_pw="xxxx"
-	mysql_db="xenforo"
-	
-	# The URL to your forum's RSS feed
-	feed_url="https://techhistory.de/thf/forums/-/index.rss"
-	
-	# Localization
-	locale_wrote="schrieb gerade"
-	locale_goto="Zum Beitrag"
-
+if test -e ~/.config/thfbot.conf; then
+	source ~/.config/thfbot.conf
+elif test -e ./thfbot.conf ; then
+	source ./thfbot.conf
+elif test -e /etc/thfbot.conf; then
+	source /etc/thfbot.conf
+else
+	echo "Configuration file not found. Please put it into either ~/.config/thfbot.conf, directly into the script directory or /etc/thfbot.conf"
+	echo "The user-specific variants are preferred to make it compatible with multi user environments. If none of them is found, the global variant in /etc/thfbot.conf is used"
+	exit 1
+fi
 
 
 rsstail -u "${feed_url}" -r -l -i ${interval} | while read line
