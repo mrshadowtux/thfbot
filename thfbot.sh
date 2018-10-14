@@ -23,6 +23,8 @@ do
 	if ! test -z "${post_link}" 
 	then
 		thread_id=$(echo ${post_link} | cut -d "/" -f 6 | cut -d "." -f 2)
+		post_link_latest=$(echo "${post_link}latest" | sed "s/ //gi")
+	
 		post_content=$(echo "select message from xf_post where thread_id=${thread_id} order by post_date desc limit 1" \
 			| mysql -u${mysql_user} -p${mysql_pw} ${mysql_db} \
 			| sed "s/\\\n/%0A/gi" \
@@ -33,11 +35,18 @@ do
 			| mysql -u${mysql_user} -p${mysql_pw} ${mysql_db} \
 			| grep -vi ^username \
 		)
+		
+		thread_title=$(echo "select title from xf_thread where thread_id=${thread_id}" \
+			| mysql -u${mysql_user} -p${mysql_pw} ${mysql_db} \
+			| grep -vi ^title \
+		)
 
-		post_link_latest=$(echo "${post_link}latest" | sed "s/ //gi")
 		
-		content_final="<b>${post_user} ${locale_wrote}:</b>%0A${post_content}%0A%0A<a href=\"${post_link_latest}\">${locale_goto}</a>%0A%0A"
-		
+		content_final=""
+		content_final="${content_final}<b>${post_user} ${locale_wrote} ${locale_inthread} '${thread_title}':</b>%0A"
+		content_final="${content_final}${post_content}%0A%0A"
+		content_final="${content_final}<a href=\"${post_link_latest}\">${locale_goto}</a>%0A%0A"
+
 		curl -s -X POST "https://api.telegram.org/${bot_id}/sendMessage" \
 			-d disable_web_page_preview="true" \
 			-d chat_id="${chat_id}" \
