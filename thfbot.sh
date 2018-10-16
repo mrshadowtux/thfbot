@@ -29,6 +29,7 @@ do
 			| mysql -u${mysql_user} -p${mysql_pw} ${mysql_db} \
 			| sed "s/\\\n/%0A/gi" \
 			| grep -vi ^message \
+			| sed "s/\[URL\]//gi;s/\[\/URL\]//gi"
 		)
 
 		post_user=$(echo "select username from xf_post where thread_id=${thread_id} order by post_date desc limit 1" \
