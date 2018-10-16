@@ -30,7 +30,8 @@ do
 			| sed "s/\\\n/%0A/gi" \
 			| grep -vi ^message \
 			| sed "s/\[URL\]//gi;s/\[\/URL\]//gi" \
-			| sed "s/\[MEDIA=youtube\]/https:\/\/youtube.com\/watch?v=/gi;s/\[\/MEDIA\]//gi"
+			| sed "s/\[MEDIA=youtube\]/https:\/\/youtube.com\/watch?v=/gi;s/\[\/MEDIA\]//gi" \
+			| sed "s/&//gi"
 		)
 
 		post_user=$(echo "select username from xf_post where thread_id=${thread_id} order by post_date desc limit 1" \
