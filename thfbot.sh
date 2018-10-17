@@ -31,6 +31,7 @@ do
 			| grep -vi ^message \
 			| sed "s/\[URL\]//gi;s/\[\/URL\]//gi" \
 			| sed "s/\[MEDIA=youtube\]/https:\/\/youtube.com\/watch?v=/gi;s/\[\/MEDIA\]//gi" \
+			| sed "s/\[ATTACH=full\]/${attachment_url}\/file\./gi;s/\[\/ATTACH\]/\//gi" \
 			| sed "s/&//gi"
 		)
 
@@ -49,12 +50,13 @@ do
 		content_final="${content_final}<b>${post_user} ${locale_wrote} ${locale_inthread} '${thread_title}':</b>%0A"
 		content_final="${content_final}${post_content}%0A%0A"
 		content_final="${content_final}<a href=\"${post_link_latest}\">${locale_goto}</a>%0A%0A"
-
+			
+		
 		curl -s -X POST "https://api.telegram.org/${bot_id}/sendMessage" \
 			-d disable_web_page_preview="true" \
 			-d chat_id="${chat_id}" \
 			-d parse_mode="html" \
 			-d text="${content_final}"
-	fi
+		fi
 done
 
