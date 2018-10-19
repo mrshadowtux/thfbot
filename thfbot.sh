@@ -57,6 +57,6 @@ do
 			-d chat_id="${chat_id}" \
 			-d parse_mode="html" \
 			-d text="${content_final}"
-		fi
+	fi
 done
 
