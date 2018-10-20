@@ -31,7 +31,8 @@ do
 			| grep -vi ^message \
 			| sed "s/\[URL\]//gi;s/\[\/URL\]//gi" \
 			| sed "s/\[MEDIA=youtube\]/https:\/\/youtube.com\/watch?v=/gi;s/\[\/MEDIA\]//gi" \
-			| sed "s/\[ATTACH=full\]/ ${attachment_url}\/file\./gi;s/\[\/ATTACH\]/\//gi" \
+			| sed "s/\[ATTACH=full\]/%0A<a href=\"${attachment_url}\/file\./gi" \
+			| sed "s/\[\/ATTACH\]/\">${locale_image}<\/a>%0A/gi" \
 			| sed "s/&//gi"
 		)
 
