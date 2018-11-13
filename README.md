@@ -1,7 +1,7 @@
 # thfbot
 A telegram bot for Xenforo based communities
 
-This script was originally written for TechHistory (https://www.techhistory.de)
+This script was originally written for thcommunity (https://www.techhistory.de)
 
 The bot requires the following to be installed on your server:
 * bash (although other shells like zsh might work too)
